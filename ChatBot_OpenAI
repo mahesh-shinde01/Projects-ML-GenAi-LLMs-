@@ -1,0 +1,37 @@
+from langchain.llms import OpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_openai import ChatOpenAI
+
+import streamlit as st
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+api_key = os.getenv("OPENAI_API_KEY")
+if api_key:
+    os.environ["OPENAI_API_KEY"] = api_key
+else:
+    raise ValueError("Environment variable 'OPENAI_API_KEY' is not set.")
+
+
+##Prompt Template
+prompt=ChatPromptTemplate.from_messages(
+    [
+        ("system", "You are a helpful assistant.Please answer the question."),
+        ("user","Question:{question}")
+    ]
+)
+
+##streamlit framework
+st.title("Langchain OpenAI Chat Example")
+input_text = st.text_input("Search your question here:")
+
+#openAI
+llm = ChatOpenAI(model="gpt-3.5-turbo")
+output_parser = StrOutputParser()
+chain=prompt|llm|output_parser
+
+if input_text:
+    st.write(chain.invoke({'question': input_text}))
