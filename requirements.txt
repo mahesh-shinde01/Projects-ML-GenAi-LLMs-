@@ -1,0 +1,11 @@
+dotenv
+pinecone
+tqdm
+langchain
+langchain_community
+pypdf
+boto3
+awscli
+langchain_pinecone
+langchain-aws
+langchain.chains
